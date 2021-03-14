@@ -1,0 +1,28 @@
+The Dependency Inversion Principle (DIP) states that high-level modules should not depend upon low-level modules; they should depend on abstractions.
+Secondly, abstractions should not depend upon details; details should depend upon abstractions.
+The idea is that we isolate our class behind a boundary formed by the abstractions it depends on.
+If all the details behind those abstractions change, then our class is still safe.
+This helps keep coupling low and makes our design easier to change.
+DIP also allows us to test things in isolation, details like database are plugins to our system.
+
+Dependency Inversion Principle Example
+Here is an example: A program depends on Reader and Writer interfaces that are abstractions,
+and Keyboard and Printer are details that depend on those abstractions by implementing those interfaces.
+Here CharCopier is oblivious to the low-level details of Reader and Writer implementations and thus you can pass in any Device that implements the Reader and Writer interface and CharCopier would still work correctly.
+
+
+public interface Reader { char getchar(); }
+public interface Writer { void putchar(char c)}
+
+class CharCopier {
+
+  void copy(Reader reader, Writer writer) {
+    int c;
+    while ((c = reader.getchar()) != EOF) {
+      writer.putchar();
+    }
+  }
+}
+
+public Keyboard implements Reader {...}
+public Printer implements Writer {…}

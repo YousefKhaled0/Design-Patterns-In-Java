@@ -1,0 +1,39 @@
+Liskov Substitution Principle (LSP)
+
+The Liskov Substitution Principle (LSP) applies to inheritance hierarchies, specifying that you should design your classes so that client dependencies can be substituted with subclasses without the client knowing about the change.
+
+All subclasses must, therefore, operate in the same manner as their base classes. The specific functionality of the subclass may be different but must conform to the expected behaviour of the base class. To be a true behavioural subtype, the subclass must not only implement the base class’s methods and properties, but also conform to its implied behaviour.
+
+In general, if a subtype of the supertype does something that the client of the supertype does not expect, then this is in violation of LSP. Imagine a derived class throwing an exception that the superclass does not throw, or if a derived class has some unexpected side effects. Basically, derived classes should never do less than their base class.
+
+A typical example that violates LSP is a Square class that derives from a Rectangle class. The Square class always assumes that the width is equal with the height. If a Square object is used in a context where a Rectangle is expected, unexpected behaviour may occur because the dimensions of a Square cannot (or rather should not) be modified independently.
+
+Liskov Substitution Principle Example
+This problem cannot be easily fixed: if we can modify the setter methods in the Square class so that they preserve the Square invariant (i.e., keep the dimensions equal), then these methods will weaken (violate) the post-conditions for the Rectangle setters, which state that dimensions can be modified independently.
+
+
+public class Rectangle {
+  private double height;
+  private double width;
+
+  public double area();
+
+  public void setHeight(double height);
+  public void setWidth(double width);
+}
+
+What you see above violates LSP.
+
+
+public class Square extends Rectangle {
+  public void setHeight(double height) {
+    super.setHeight(height);
+    super.setWidth(height);
+  }
+
+  public void setWidth(double width) {
+    setHeight(width);
+  }
+}
+
+Violations of LSP cause undefined behaviour. Undefined behaviour means that it works okay during development but blows up in production, or that you spend weeks debugging something that only occurs once per day, or that you have to go through hundreds of megabytes of logs to figure out what went wrong.
